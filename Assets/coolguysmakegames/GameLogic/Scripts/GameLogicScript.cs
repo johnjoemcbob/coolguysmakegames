@@ -16,6 +16,7 @@ public class GameLogicScript : MonoBehaviour
 	public EnemySpawnerScript[] Spawners;
 	public PlayerGateTriggerScript PlayerGate;
 	public GameObject GameWinPrefab;
+	public GameObject Player;
 
 	private bool FinishedRoundSpawning = false;
 	private bool RoundOutcomeLose = false;
@@ -83,6 +84,9 @@ public class GameLogicScript : MonoBehaviour
 		// Reset the health of the gate
 		PlayerGate.Health = PlayerGate.MaxHealth;
 		PlayerGate.TakeHealth( 0 ); // (to update the ui text)
+
+		// Reset the player's position
+		Player.transform.position = Vector3.zero;
     }
 
 	public void SetFinishedRoundSpawning( bool finish )

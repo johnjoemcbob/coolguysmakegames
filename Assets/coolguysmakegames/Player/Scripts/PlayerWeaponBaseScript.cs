@@ -9,6 +9,7 @@ using System.Collections;
 public class PlayerWeaponBaseScript : MonoBehaviour
 {
 	public GameObject Projectile;
+	public float ProjectileSpeed = 30;
 
 	// Update is called once per frame
 	void Update()
@@ -18,12 +19,12 @@ public class PlayerWeaponBaseScript : MonoBehaviour
 			// Create projectile and fire it
 			GameObject projectile = (GameObject) Instantiate( Projectile, transform.position + transform.forward - ( transform.up / 2 ), transform.rotation );
 			projectile.transform.LookAt( projectile.transform.position + transform.forward );
-			projectile.GetComponentInChildren<Rigidbody>().velocity = transform.forward * 10;
+			projectile.GetComponentInChildren<Rigidbody>().velocity = transform.forward * ProjectileSpeed;
 			projectile.transform.SetParent( GameObject.Find( "GameObjectContainer" ).transform );
 
 			// Play fire sound
-			GetComponent<AudioSource>().volume = Random.Range( 0.85f, 1 );
-			GetComponent<AudioSource>().pitch = Random.Range( 0.85f, 1.15f );
+			GetComponent<AudioSource>().volume = Random.Range( 0.2f, 0.3f );
+			GetComponent<AudioSource>().pitch = Random.Range( 0.2f, 0.2f );
 			GetComponent<AudioSource>().Play();
 		}
 	}

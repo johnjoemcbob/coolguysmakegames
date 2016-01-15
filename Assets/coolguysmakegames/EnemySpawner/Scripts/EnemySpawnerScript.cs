@@ -6,14 +6,12 @@ using System.Collections;
 // Matthew Cormack
 // 13/01/16 - 04:07
 
-// TODO:
-// - Detect round spawnend and alert main round logic
-
 // The structure for holding the current prefab to spawn, number of prefabs, and delay before moving on
 public struct SpawnFormation
 {
 	public GameObject Prefab;
 	public int NumberOfPrefabs;
+	public int Route;
 	public float UnitDelay;
 	public float NextDelay;
 }
@@ -22,7 +20,7 @@ public class EnemySpawnerScript : MonoBehaviour
 {
 	public bool SpawningActive = false;
 	public GameObject[] testprefab;
-	public SpawnFormation[] SpawnFormations = new SpawnFormation[7];
+	public SpawnFormation[] SpawnFormations = new SpawnFormation[8];
 	public int CurrentFormation = 0;
 	// The selection of possible routes for this spawner
 	public GameObject[] RouteStart;
@@ -40,52 +38,68 @@ public class EnemySpawnerScript : MonoBehaviour
 		int formation = 0;
 		int unit_cube = 0;
 		int unit_sphere = 1;
+		int unit_bomb = 2;
 
-		// 5 Cubes
+		// 5 Cubes; Straight
 		SpawnFormations[formation].Prefab = testprefab[unit_cube];
         SpawnFormations[formation].NumberOfPrefabs = 5;
-		SpawnFormations[formation].UnitDelay = 0.2f;
+		SpawnFormations[formation].Route = 0;
+		SpawnFormations[formation].UnitDelay = 0.4f;
 		SpawnFormations[formation].NextDelay = 4;
         formation++;
 
-		// 1 Sphere
+		// 1 Sphere; Figure Eight
 		SpawnFormations[formation].Prefab = testprefab[unit_sphere];
 		SpawnFormations[formation].NumberOfPrefabs = 1;
+		SpawnFormations[formation].Route = 1;
 		SpawnFormations[formation].UnitDelay = 0.2f;
 		SpawnFormations[formation].NextDelay = 2;
 		formation++;
 
-		// 10 Cubes
+		// 10 Cubes; Straight
 		SpawnFormations[formation].Prefab = testprefab[unit_cube];
 		SpawnFormations[formation].NumberOfPrefabs = 10;
-		SpawnFormations[formation].UnitDelay = 0.2f;
+		SpawnFormations[formation].Route = 0;
+		SpawnFormations[formation].UnitDelay = 0.4f;
 		SpawnFormations[formation].NextDelay = 2;
 		formation++;
 
-		// 10 Cubes
+		// 10 Cubes; Figure Eight
 		SpawnFormations[formation].Prefab = testprefab[unit_cube];
 		SpawnFormations[formation].NumberOfPrefabs = 10;
-		SpawnFormations[formation].UnitDelay = 0.2f;
+		SpawnFormations[formation].Route = 1;
+		SpawnFormations[formation].UnitDelay = 0.4f;
 		SpawnFormations[formation].NextDelay = 2;
 		formation++;
 
-		// 5 Spheres
+		// 5 Spheres; Figure Eight
 		SpawnFormations[formation].Prefab = testprefab[unit_sphere];
 		SpawnFormations[formation].NumberOfPrefabs = 5;
+		SpawnFormations[formation].Route = 1;
 		SpawnFormations[formation].UnitDelay = 0.2f;
 		SpawnFormations[formation].NextDelay = 2;
 		formation++;
 
-		// 15 Cubes
+		// 1 Bomb; Straight
+		SpawnFormations[formation].Prefab = testprefab[unit_bomb];
+		SpawnFormations[formation].NumberOfPrefabs = 1;
+		SpawnFormations[formation].Route = 0;
+		SpawnFormations[formation].UnitDelay = 0.4f;
+		SpawnFormations[formation].NextDelay = 2;
+		formation++;
+
+		// 15 Cubes; Straight
 		SpawnFormations[formation].Prefab = testprefab[unit_cube];
 		SpawnFormations[formation].NumberOfPrefabs = 15;
-		SpawnFormations[formation].UnitDelay = 0.2f;
+		SpawnFormations[formation].Route = 0;
+		SpawnFormations[formation].UnitDelay = 0.4f;
 		SpawnFormations[formation].NextDelay = 2;
 		formation++;
 
-		// 20 Spheres
+		// 20 Spheres; Straight
 		SpawnFormations[formation].Prefab = testprefab[unit_sphere];
 		SpawnFormations[formation].NumberOfPrefabs = 20;
+		SpawnFormations[formation].Route = 0;
 		SpawnFormations[formation].UnitDelay = 0.4f;
 		SpawnFormations[formation].NextDelay = 2;
 		formation++;
@@ -101,7 +115,7 @@ public class EnemySpawnerScript : MonoBehaviour
 			if ( ( !HasSpawnedFormation ) && ( Time.time >= NextUnitSpawnTime ) )
 			{
 				// Pick a random path
-				GameObject routestart = RouteStart[Random.Range( 0, RouteStart.Length - 1 )];
+				GameObject routestart = RouteStart[SpawnFormations[CurrentFormation].Route]; // RouteStart[Random.Range( 0, RouteStart.Length - 1 )];
 
 				// Spawn each unit in the formation at the spawn point
 				GameObject unit = (GameObject) Instantiate( SpawnFormations[CurrentFormation].Prefab, transform.position, transform.rotation );

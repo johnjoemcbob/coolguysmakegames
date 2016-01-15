@@ -79,6 +79,7 @@ public class EnemyUnitCubeScript : EnemyUnitBaseScript
 			transform.rotation = Quaternion.LookRotation( direction );
 		}
 
-		UpdateHat();
+		UpdateFall();
+        UpdateHat();
 	}
 }

@@ -39,6 +39,14 @@ public class EnemyUnitBaseScript : MonoBehaviour
 		Hat.transform.eulerAngles += Mathf.Sin( ( Time.time + UniqueTimeOffset ) * 50 ) * 5 * transform.right;
 	}
 
+	protected void UpdateFall()
+	{
+		if ( transform.position.y < -15 )
+		{
+			Die_Killed();
+		}
+	}
+
 	public void Die_DamageGate()
 	{
 		GameObject effect = (GameObject) Instantiate( DamageDiePrefab, transform.position, Quaternion.Euler( Vector3.zero ) );

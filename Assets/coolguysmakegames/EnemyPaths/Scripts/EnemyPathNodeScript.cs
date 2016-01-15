@@ -10,6 +10,7 @@ public class EnemyPathNodeScript : MonoBehaviour
 {
 	public GameObject NextNode;
 	public GameObject NextNodeParticlePrefab;
+	public Color RouteVisualColour = Color.red;
 
 	private GameObject NextNodeParticle;
 
@@ -30,7 +31,8 @@ public class EnemyPathNodeScript : MonoBehaviour
 
 		// Alter the particle system to reflect the path
 		ParticleSystem system = NextNodeParticle.GetComponent<ParticleSystem>();
-		system.startRotation = NextNodeParticle.transform.eulerAngles.y - 45;
+		system.startRotation = NextNodeParticle.transform.eulerAngles.y * Mathf.Deg2Rad;
 		system.startLifetime = distancemultiplier;
+		system.startColor = RouteVisualColour;
     }
 }
